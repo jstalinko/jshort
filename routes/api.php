@@ -17,3 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/ip/{ip}' , function($ip){
+    
+     return \App\Services\Jd::get_country($ip);
+});

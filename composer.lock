@@ -4,8 +4,45 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ef9d76adbb4c979b17479d3cee4e9c65",
+    "content-hash": "865d0121881c72e8339e2ea377d0d7fd",
     "packages": [
+        {
+            "name": "ajaz/random-quotes-generator-php",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ajazsaif/random-quotes-generator-php.git",
+                "reference": "995b6404e3737debea583e2e75ff9a44ea00bba6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ajazsaif/random-quotes-generator-php/zipball/995b6404e3737debea583e2e75ff9a44ea00bba6",
+                "reference": "995b6404e3737debea583e2e75ff9a44ea00bba6",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "RandomQuotes\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ajaz",
+                    "email": "ajazaalam@gmail.com"
+                }
+            ],
+            "description": "This library will generate random quotes",
+            "support": {
+                "issues": "https://github.com/ajazsaif/random-quotes-generator-php/issues",
+                "source": "https://github.com/ajazsaif/random-quotes-generator-php/tree/1.0"
+            },
+            "time": "2020-11-06T10:48:46+00:00"
+        },
         {
             "name": "anourvalar/eloquent-serialize",
             "version": "1.2.23",
@@ -10466,12 +10503,12 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^8.1"
     },
-    "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "platform-dev": {},
+    "plugin-api-version": "2.6.0"
 }

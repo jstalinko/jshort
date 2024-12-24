@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\JustOrangeController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ShortlinkController;
+use App\Http\Controllers\JustOrangeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,3 +16,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [JustOrangeController::class , 'index']);
+Route::get('/{short}' , ShortlinkController::class)->middleware('shortlinkRule');
