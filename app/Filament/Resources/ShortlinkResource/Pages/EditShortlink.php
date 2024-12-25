@@ -17,4 +17,17 @@ class EditShortlink extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+
+    protected function mutateFormDataBeforeSave(array $data):array
+    {
+        $data['user_id'] = auth()->user()->id;
+        $data['lock_country'] = is_array($data['lock_country']) ? implode(",", $data['lock_country']) : $data['lock_country'];
+        $data['lock_device'] = is_array($data['lock_device']) ? implode(",", $data['lock_device']) : $data['lock_device'];
+        $data['lock_os'] = is_array($data['lock_os']) ? implode(",", $data['lock_os']) : $data['lock_os'];
+        $data['lock_referer'] = is_array($data['lock_referer']) ? implode(",", $data['lock_referer']) : $data['lock_referer'];
+
+
+
+        return $data;
+    }
 }

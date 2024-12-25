@@ -31,7 +31,39 @@ class Shortlink extends Model
         'active',
     ];
 
-    
+    public function getLockCountryAttribute($value)
+    {
+        if(strpos($value ,",") !== false){
+            return explode(',', $value);
+        }else{
+            return [$value];
+        }
+    }
+    public function getLockDeviceAttribute($value)
+    {
+        if(strpos($value ,",") !== false){
+            return explode(',', $value);
+        }else{
+            return [$value];
+        }
+    }
+
+    public function getLockOsAttribute($value)
+    {
+        if(strpos($value ,",") !== false){
+            return explode(',', $value);
+        }else{
+            return [$value];
+        }
+    }
+    public function getLockRefererAttribute($value)
+    {
+        if(strpos($value ,",") !== false){
+            return explode(',', $value);
+        }else{
+            return [$value];
+        }
+    }
     public function user()
     {
         return $this->belongsTo(User::class);

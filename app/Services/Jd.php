@@ -258,6 +258,19 @@ class Jd
 
     public static function parse_comma($data, $user)
     {
+        if(is_array($data))
+        {
+
+            $arr = array_map(function($d){
+                return strtoupper($d);
+            },$data);
+            if(in_array(strtoupper($user),$arr))
+            {
+                return true;
+            }else{
+                return false;
+            }
+        }else{
         $data = strtoupper($data);
         $user = strtoupper($user);
 
@@ -275,6 +288,8 @@ class Jd
             } else {
                 return false;
             }
+        }
+        
         }
     }
 

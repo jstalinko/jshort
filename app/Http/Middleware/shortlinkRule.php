@@ -22,10 +22,22 @@ class shortlinkRule
         $ip = $request->ip() == '::1' ?? '8.8.8.8';
         $detect = Jd::get_country($ip);
         if(!$shortz) abort(404);
+        //------------------------------ BLOCK UNKNOWN ------------------------------//
+        $unknowns =[
+            Jd::detect_browser(),
+            Jd::detect_os(),
+            Jd::detect_platform(),
+            Jd::detect_device()
+        ];
+        if(preg_match("/".implode("|",$unknowns)."/i" , $request->userAgent()))
+        {
+            Jd::blocked($detect,'ACCESS BLOCKED UNKNOWN DEVICE ,OS OR PLATFORM',$shortz);
+        }
 
+        
         //------------------------------ DETECT LOCK COUNTRY ------------------------------//
-        if ($shortz->lock_country != 'all'  && !Jd::parse_comma($shortz->lock_country, $detect['country_code'])) {
-            Jd::blocked($detect,'ACCESS BLOCKED BY LOCK COUNTRY RULES.',  $shortz);
+        if ($shortz->lock_country[0] != 'all'  && !Jd::parse_comma($shortz->lock_country, $detect['country_code'])) {
+            Jd::blocked($detect,'ACCESS BLOCKED BY LOCK COUNTRY RULES. ',  $shortz);
         }
         //------------------------------ DETECT LOCK BROWSER ------------------------------//
         if($shortz->lock_browser != 'all')
@@ -50,21 +62,21 @@ class shortlinkRule
         }
 
         //------------------------------ DETECT LOCK DEVICE ------------------------------//
-        if($shortz->lock_device != 'all' && !Jd::parse_comma($shortz->lock_device ,Jd::detect_device()))
+        if($shortz->lock_device[0] != 'all' && !Jd::parse_comma($shortz->lock_device ,Jd::detect_device()))
         {
             Jd::blocked($detect,'ACCESS BLOCKED BY LOCK DEVICE RULES.',  $shortz);
 
         }
 
         //------------------------------ DETECT LOCK OS ------------------------------//
-        if($shortz->lock_os != 'all' && !Jd::parse_comma($shortz->lock_os , Jd::detect_os()))
+        if($shortz->lock_os[0] != 'all' && !Jd::parse_comma($shortz->lock_os , Jd::detect_os()))
         {
             Jd::blocked($detect,'ACCESS BLOCKED BY LOCK OS RULES.',  $shortz);
 
         }
 
         //------------------------------ DETECT LOCK REFERER ------------------------------//
-        if($shortz->lock_referer != 'all' && !Jd::parse_comma($shortz->lock_referer , Jd::detect_referer()))
+        if($shortz->lock_referer[0] != 'all' && !Jd::parse_comma($shortz->lock_referer , Jd::detect_referer()))
         {
             Jd::blocked($detect,'ACCESS BLOCKED BY LOCK REFERER ('.$shortz->lock_referer.') RULES.',  $shortz);
 
