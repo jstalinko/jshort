@@ -8,6 +8,7 @@ use Filament\Forms\Form;
 use App\Models\Shortlink;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
+use App\Services\IpApiService;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
@@ -15,7 +16,7 @@ use Filament\Forms\Components\Actions\Action;
 use App\Filament\Resources\ShortlinkResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\ShortlinkResource\RelationManagers;
-use App\Services\IpApiService;
+use Webbingbrasil\FilamentCopyActions\Tables\Actions\CopyAction;
 
 class ShortlinkResource extends Resource
 {
@@ -23,7 +24,16 @@ class ShortlinkResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-link';
     protected static ?int $sort = 1;
+    public static function getTableQuery(): Builder
+    {
+        $query = Shortlink::query();
 
+        if (!auth()->user()->hasRole('super_admin')) {
+            $query->where('user_id', auth()->id());
+        }
+
+        return $query;
+    }
 
     public static function form(Form $form): Form
     {
@@ -118,7 +128,7 @@ class ShortlinkResource extends Resource
                             'tiktok' => 'Tiktok',
                         ])->multiple()->native(false)
                         ->helperText('Tips: Kunci visitor dari referer atau sumber trafik tertentu'),
-                        
+
                     Forms\Components\TextInput::make('throttle')
                         ->required()
                         ->numeric()
@@ -136,7 +146,8 @@ class ShortlinkResource extends Resource
                         ->required()
                         ->helperText('Tips: Aktifkan untuk proteksi dari visitor yang menggunakan VPN atau PROXY'),
                     Forms\Components\Toggle::make('block_crawler')
-                        ->required()->helperText('Tips: Aktifkan untuk proteksi dari crawler search engine dan bad crawler'),
+                        ->label('Auto Block IE,ID,SG Country')
+                        ->required()->helperText('Tips: Aktifkan untuk proteksi dari negara ID,IE,SG'),
                     Forms\Components\Toggle::make('logs')
                         ->required()->default(true)->label('Logs traffic')->helperText('Tips: Aktifkan untuk memantau traffic details'),
                     Forms\Components\Toggle::make('active')->helperText('* Aktif atau tidak nya shortlink')
@@ -179,10 +190,12 @@ class ShortlinkResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
+                CopyAction::make('Copy Link')->icon('heroicon-o-link')->copyable(fn(Shortlink $short) => url('/'.$short->short))->color('danger'),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\Action::make('Stats')->icon('heroicon-s-chart-pie')->color('success'),
-                
+                Tables\Actions\Action::make('Stats')->icon('heroicon-s-chart-pie')->color('success')
+                    ->url(fn($record): string => static::getUrl('stat', ['record' => $record->id])),
+
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -205,6 +218,7 @@ class ShortlinkResource extends Resource
             'create' => Pages\CreateShortlink::route('/create'),
             'view' => Pages\ViewShortlink::route('/{record}'),
             'edit' => Pages\EditShortlink::route('/{record}/edit'),
+            'stat' => Pages\StatShortlink::route('{record}/stat')
         ];
     }
 }

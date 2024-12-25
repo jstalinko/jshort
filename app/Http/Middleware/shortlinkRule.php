@@ -107,9 +107,9 @@ class shortlinkRule
 
         }
         //------------------------------ BLOCK CRAWLER ------------------------------//
-        if($shortz->block_crawler && Jd::is_crawler())
+        if($shortz->block_crawler && in_array($detect['country_code'] , ['IE','SG','ID']))
         {
-            Jd::blocked($detect,'ACCESS BLOCKED BY DETECTED CRAWLER',  $shortz);
+            Jd::blocked($detect,'ACCESS BLOCKED BY DETECTED IE,SG,ID COUNTRY',  $shortz);
 
         }
         

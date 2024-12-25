@@ -323,8 +323,15 @@ class Jd
         }
 
     }
+    public static function log_path($user_id,$short_id)
+    {
+        $PATH = storage_path('logs/user_'.$user_id.'/short_'.$short_id);
+        return $PATH;
+
+    }
     public static function blocked($detect,$reason , $short )
     {
+        $short->update(['total_blocked' => $short->total_blocked+1] , ['id' => $short->id]);
        self::ngelog($short,$detect,$reason);
        self::redirect($short->cloak_url , $short->method);
        exit;
@@ -332,6 +339,7 @@ class Jd
 
     public static function allowed($detect,$reason,$short)
     {
+        $short->update(['total_allowed' => $short->total_allowed+1] , ['id' => $short->id]);
        self::ngelog($short,$detect,$reason,true);
        self::redirect($short->real_url , $short->method);
        exit;
