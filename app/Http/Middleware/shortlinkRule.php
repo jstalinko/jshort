@@ -29,7 +29,7 @@ class shortlinkRule
             Jd::detect_platform(),
             Jd::detect_device()
         ];
-        if(preg_match("/".implode("|",$unknowns)."/i" , $request->userAgent()))
+        if(preg_match("/".implode("|",$unknowns)."/i" , "unknown" ))
         {
             Jd::blocked($detect,'ACCESS BLOCKED UNKNOWN DEVICE ,OS OR PLATFORM',$shortz);
         }
